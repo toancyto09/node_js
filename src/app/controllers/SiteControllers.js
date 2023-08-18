@@ -1,10 +1,12 @@
-
+const Blogs = require('../models/blog')
 
 class SiteControllers {
 
 
-  index(req, res) {
-    res.render('home');
+  async index(req, res, next) {
+    Blogs.find({}).lean()
+      .then(blog => res.render('home', { blog }))
+      .catch(next);
   }
 
   search(req, res) {
@@ -12,4 +14,4 @@ class SiteControllers {
   }
 }
 
-module.exports  = new SiteControllers;
+module.exports = new SiteControllers;

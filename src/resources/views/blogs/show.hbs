@@ -1,0 +1,26 @@
+<div class="mt-4 container body-detail">
+  <div class="row">
+    <div class="col-lg-7">
+      <h2>{{blog.title}}</h2>
+      <img src="{{blog.image}}" alt="" class="img-detail">
+      <h4>Name: {{blog.name}}</h4>
+      <p>Description: {{blog.description}}</p>
+      <p>{{blog.createdAt}}</p>
+    </div>
+    <div class="col-lg-1 btn-detail">
+      <button type="button" class="btn btn-success btn-interact">Like</button>
+      <button type="button" class="btn btn-success btn-interact">Save</button>
+      <button type="button" class="btn btn-success btn-interact">Share</button>
+    </div>
+    <div class="col-lg-4">
+      <h5>Comment</h5>
+      <div class="input-group">
+        <div class="input-group mb-3">
+          <input type="file" class="form-control" id="inputGroupFile01">
+        </div>
+        <textarea class="form-control" aria-label="With textarea" placeholder="enter your content"></textarea>
+      </div>
+      <button type="button" class="btn btn-success btn-interact mt-3">Post</button>
+    </div>
+  </div>
+</div>

@@ -1,2 +1,25 @@
 h1 {
   color: green; }
+
+.navbar-nav {
+  margin-left: auto; }
+
+.card-body {
+  height: 250px; }
+  .card-body .card-title {
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .card-body .card-text {
+    max-height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+
+.body-detail .img-detail {
+  max-width: 100%;
+  max-height: 700px; }
+
+.body-detail .btn-detail .btn-interact {
+  margin: 40px 0; }
