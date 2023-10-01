@@ -1,5 +1,9 @@
 @import 'variables';
 
+a {
+  text-decoration: none;
+}
+
 h1 {
   color: $red-color;
 }
@@ -42,4 +46,9 @@ h1 {
     }
   }
 
+}
+
+.form-select-all-option {
+  width: 120px;
+  margin: 0 10px;
 }

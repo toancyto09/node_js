@@ -1,0 +1,150 @@
+<form name="container-form" class="mt-4" method="POST" action="/blog/handle-form-actions">
+  <div>
+    <h3>My Blogs</h3>
+    <a href="/me/trash/blog">Trash ({{deleteCount}})</a>
+    <div class="mt-4 d-flex align-items-center">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+        <label class="form-check-label" for="checkbox-all">
+          Select All
+        </label>
+      </div>
+
+      <select class="form-select form-select-sm form-select-all-option" aria-label="Default select example"
+        name="action" required>
+        <option value="">-Action-</option>
+        <option value="delete">Delete</option>
+      </select>
+
+      <button type="submit" class="btn btn-primary btn-sm check-all-submit-btn disabled">Apply</button>
+    </div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th></th>
+        <th scope="col">#</th>
+        <th scope="col">
+          name
+          {{{sortable 'name' _sort}}}
+        </th>
+        <th scope="col">title</th>
+        <th scope="col">image</th>
+        <th scope="col">description</th>
+        <th scope="col">created At</th>
+        <th scope="col" colspan="2">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each blog}}
+      <tr>
+        <td>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="blogIds[]" value="{{this._id}}">
+          </div>
+        </td>
+        <th scope="row">{{sum @index 1}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.title}}</td>
+        <td><img src="{{this.image}}" alt="" style="width: 40px; height: 40px; object-fit:cover ;"></td>
+        <td>{{this.description}}</td>
+        <td>{{this.createdAt}}</td>
+        <td><a href="/blog/{{this._id}}/edit" class="btn btn-link">Edit</a></td>
+        <td><a href="" class="btn btn-link" data-id="{{this._id}}" data-bs-toggle="modal"
+            data-bs-target="#delete-blog-modal">Delete</a></td>
+      </tr>
+      {{else}}
+      <tr>
+        <td colspan="8" class="text-center">
+          You have not posted any blog yet.
+          <a href="/blog/create">Post blog</a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</form>
+
+{{!-- Mode confirm delete --}}
+<!-- Modal -->
+<div class="modal fade" id="delete-blog-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Comfirm Delete</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="btn-delete-blog" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- form submit --}}
+<form method="POST" name="delete-blog-form"></form>
+
+
+<script>
+  const idBlogModal = document.getElementById('delete-blog-modal');
+  var idBlog;
+  var btnDeleteBlog = document.getElementById('btn-delete-blog');
+  var deleteForm = document.forms['delete-blog-form'];
+  var containerForm = document.forms['container-form'];
+  var checkboxAll = $('#checkbox-all');
+  var blogItemCheckbox = $('input[name="blogIds[]"]');
+  var checkAllSubmitBtn = $('.check-all-submit-btn');
+
+  //show modal
+  if (idBlogModal) {
+    idBlogModal.addEventListener('show.bs.modal', event => {
+      const button = event.relatedTarget
+      idBlog = button.getAttribute('data-id');
+    })
+  }
+
+  //truyen method delete
+  btnDeleteBlog.onclick = function () {
+    deleteForm.action = '/blog/' + idBlog + '?_method=DELETE';
+    deleteForm.submit();
+  }
+
+  //check all submit button click
+  checkAllSubmitBtn.on('submit', function (e) {
+    var isSubmitable = !$(this).hasClass('disabled');
+    if (!isSubmitable) {
+      e.preventDefault();
+    }
+  });
+
+
+  //checked all
+  checkboxAll.change(function () {
+    var isCheckAll = $(this).prop('checked');
+    blogItemCheckbox.prop('checked', isCheckAll);
+    renderCheckAllSubmitBtn();
+  })
+
+  //checker item
+  blogItemCheckbox.change(function () {
+    var isCheckAll = blogItemCheckbox.length === $('input[name="blogIds[]"]:checked').length;
+    checkboxAll.prop('checked', isCheckAll);
+    renderCheckAllSubmitBtn();
+  })
+
+  //RE-RENDER Check all submit button
+
+  function renderCheckAllSubmitBtn() {
+    var checkCount = $('input[name="blogIds[]"]:checked').length;
+    if (checkCount > 0) {
+      checkAllSubmitBtn.removeClass('disabled');
+    } else {
+      checkAllSubmitBtn.addClass('disabled');
+    }
+  }
+
+</script>

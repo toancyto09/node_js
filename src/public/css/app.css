@@ -1,3 +1,6 @@
+a {
+  text-decoration: none; }
+
 h1 {
   color: green; }
 
@@ -23,3 +26,7 @@ h1 {
 
 .body-detail .btn-detail .btn-interact {
   margin: 40px 0; }
+
+.form-select-all-option {
+  width: 120px;
+  margin: 0 10px; }
